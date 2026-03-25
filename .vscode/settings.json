@@ -34,6 +34,7 @@
     "pytest",
     "pythonpath",
     "sqlalchemy",
+    "subproblems",
     "testpaths",
     "venv"
   ],
