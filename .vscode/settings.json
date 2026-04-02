@@ -33,6 +33,7 @@
     "pyproject",
     "pytest",
     "pythonpath",
+    "retgen",
     "sqlalchemy",
     "subproblems",
     "testpaths",
