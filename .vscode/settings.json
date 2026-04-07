@@ -14,6 +14,7 @@
     "isort",
     "isready",
     "langchain",
+    "langfuse",
     "LCEL",
     "mockada",
     "mypy",
