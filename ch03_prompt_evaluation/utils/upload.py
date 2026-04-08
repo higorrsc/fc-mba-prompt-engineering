@@ -1,3 +1,4 @@
+import argparse
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -7,28 +8,47 @@ from ch03_prompt_evaluation.shared.datasets import upload_langsmith_dataset
 
 load_dotenv()
 
-SCRIPT_DIR = Path(__file__).parent
-DATASET_FILE = SCRIPT_DIR / "dataset.jsonl"
-DATASET_NAME = "evaluation_basic_dataset"
 
-
-def upload_dataset() -> None:
+def upload_dataset(dataset_dir: str, dataset_name: str) -> None:
     """Upload dataset to LangSmith with metadata support."""
 
     client = get_langsmith_client()
 
+    dataset_file = Path(dataset_dir) / "dataset.jsonl"
+
+    if not dataset_file.exists():
+        print(f"Error: Dataset file not found at {dataset_file}")
+        return
+
     count = upload_langsmith_dataset(
-        DATASET_FILE,
-        DATASET_NAME,
-        "Shared dataset for basic evaluators",
+        dataset_file,
+        dataset_name,
+        f"Shared dataset for {dataset_name}",
         client,
     )
 
-    print(f"Dataset '{DATASET_NAME}' updated with {count} examples")
+    print(f"Dataset '{dataset_name}' updated with {count} examples")
 
 
 def main() -> None:
-    upload_dataset()
+    """Add arguments to upload a dataset to LangSmith."""
+
+    parser = argparse.ArgumentParser(description="Upload a dataset to LangSmith.")
+    parser.add_argument(
+        "--dataset-dir",
+        type=str,
+        required=True,
+        help="The directory containing the dataset.jsonl file.",
+    )
+    parser.add_argument(
+        "--dataset-name",
+        type=str,
+        required=True,
+        help="The name of the dataset to upload.",
+    )
+    args = parser.parse_args()
+
+    upload_dataset(args.dataset_dir, args.dataset_name)
 
 
 if __name__ == "__main__":
