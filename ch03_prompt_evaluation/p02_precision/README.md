@@ -50,9 +50,9 @@ A estratégia mais sofisticada, utilizando camadas de análise e critérios de c
 
 Este arquivo contém o conjunto de dados para avaliação de precisão e recall. Diferente do laboratório básico, o gabarito aqui foca estritamente em pares `(type, severity)` para permitir o cálculo exato de métricas de classificação.
 
-- **Inputs**: Trechos de código Go (os mesmos do laboratório básico).
-- **Outputs**: `expected_findings` contendo apenas o `type` e a `severity` esperada para cada bug real.
-- **Metadata**: Categorias como `security`, `performance`, `robustness` e níveis de dificuldade.
+* **Inputs**: Trechos de código Go (os mesmos do laboratório básico).
+* **Outputs**: `expected_findings` contendo apenas o `type` e a `severity` esperada para cada bug real.
+* **Metadata**: Categorias como `security`, `performance`, `robustness` e níveis de dificuldade.
 
 ## Como Executar
 
@@ -61,6 +61,7 @@ Este arquivo contém o conjunto de dados para avaliação de precisão e recall.
 Você pode carregar os dados para o LangSmith usando o `Makefile` na raiz do projeto ou executando o script diretamente com `uv`. O nome do dataset deve ser `evaluation_precision_dataset`.
 
 **Opção A: Via Makefile (Recomendado)**
+
 ```bash
 # Upload do dataset
 make upload DIR=ch03_prompt_evaluation/p02_precision NAME=evaluation_precision_dataset
@@ -70,6 +71,7 @@ make reset NAME=evaluation_precision_dataset
 ```
 
 **Opção B: Via Comando uv**
+
 ```bash
 # Upload do dataset
 uv run -m ch03_prompt_evaluation.utils.upload \
