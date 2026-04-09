@@ -1,43 +1,46 @@
 # Evaluation Utilities
 
-Este diretório contém os recursos e scripts utilitários necessários para preparar o ambiente de avaliação e gerenciar os datasets de teste.
-
-## Recursos Principal
-
-### `dataset.jsonl`
-
-Este arquivo contém os exemplos de teste utilizados nos experimentos de avaliação.
-
-- Cada linha é um objeto JSON com campos:
-  - **`inputs`**: A entrada que será passada para o modelo (ex: código fonte para análise).
-  - **`outputs`**: A saída de referência ou "Ground Truth" esperada.
-  - **`metadata`**: Informações adicionais (ex: `language`, `complexity`) que podem ser usadas para filtrar resultados no LangSmith.
+Este diretório contém scripts utilitários necessários para gerenciar o ambiente de avaliação no LangSmith e calcular métricas de performance.
 
 ## Scripts de Gerenciamento
 
 ### 1. `upload.py`
 
-Script para sincronizar o arquivo `dataset.jsonl` local com a plataforma **LangSmith**.
+Script para sincronizar arquivos `dataset.jsonl` locais com a plataforma **LangSmith**.
 
-- Carrega o dataset local.
-- Cria o dataset remotamente se ele não existir.
-- Limpa versões antigas para garantir consistência.
+- Carrega o dataset de um diretório específico.
+- Cria ou atualiza o dataset remotamente.
 - Preserva metadados dos exemplos.
-- **Execução**: `python ch03_prompt_evaluation/utils/upload.py`
+- **Execução**:
+  ```bash
+  python ch03_prompt_evaluation/utils/upload.py --dataset-dir <caminho_do_diretorio> --dataset-name <nome_no_langsmith>
+  ```
 
 ### 2. `reset.py`
 
-Script utilitário para "limpeza profunda" do ambiente LangSmith.
+Script utilitário para exclusão de datasets no LangSmith.
 
-- Localiza o dataset principal (`evaluation_basic_dataset`).
 - Exclui o dataset e todos os seus históricos de experimentos associados.
-- Útil para reinicializar o laboratório do zero.
-- **Execução**: `python ch03_prompt_evaluation/utils/reset.py`
+- **Execução**:
+  ```bash
+  python ch03_prompt_evaluation/utils/reset.py --dataset-name <nome_no_langsmith>
+  ```
+
+### 3. `metrics.py`
+
+Biblioteca de funções para cálculo de métricas de avaliação.
+
+- **`calculate_precision_recall_f1`**: Implementação genérica para calcular Precisão, Recall e F1-Score.
+- **`extract_findings_comparable`**: Extrai campos estruturados (tipo e severidade) de saídas JSON para comparações exatas.
+- Usado intensivamente no capítulo de Precisão e Recall.
 
 ## Fluxo de Trabalho Recomendado
 
-Antes de iniciar qualquer experimento no diretório `p01_basic`, certifique-se de que o dataset está carregado e atualizado executando o script de upload:
+Antes de iniciar qualquer experimento, certifique-se de que o dataset específico do laboratório foi carregado:
 
 ```bash
-uv run python ch03_prompt_evaluation/utils/upload.py
+# Exemplo para o laboratório básico
+uv run python ch03_prompt_evaluation/utils/upload.py \
+    --dataset-dir ch03_prompt_evaluation/p01_basic \
+    --dataset-name evaluation_basic_dataset
 ```

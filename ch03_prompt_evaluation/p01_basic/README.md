@@ -36,10 +36,27 @@ Série de scripts que demonstram como os avaliadores detectam problemas típicos
 
 Contém as definições dos prompts de sistema e usuários em formato YAML. Estes prompts são carregados pelos scripts para garantir reprodutibilidade e facilitar ajustes de engenharia de prompt sem alterar o código Python.
 
+## Dataset de Teste
+
+### `dataset.jsonl`
+
+Este arquivo contém os 10 exemplos de código Go com vulnerabilidades e problemas de performance conhecidos, servindo como o gabarito (Ground Truth) para as avaliações.
+
+- **Inputs**: Trechos de código Go.
+- **Outputs**: Lista de achados estruturados (JSON) com tipo, linha, descrição e severidade.
+- **Metadata**: Categorização por tópico e complexidade.
+
 ## Como Executar os Experimentos
 
 1. **Requisito**: Ter configurado as chaves de API (`OPENAI_API_KEY` e `LANGSMITH_API_KEY`) no arquivo `.env`.
-2. **Preparação**: Certifique-se de que o dataset base está carregado (veja `utils/README.md`).
+2. **Preparação**: Carregue o dataset para o LangSmith:
+
+    ```bash
+    uv run python ch03_prompt_evaluation/utils/upload.py \
+        --dataset-dir ch03_prompt_evaluation/p01_basic \
+        --dataset-name evaluation_basic_dataset
+    ```
+
 3. **Execução**:
 
     ```bash
