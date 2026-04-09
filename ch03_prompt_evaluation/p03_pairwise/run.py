@@ -54,7 +54,6 @@ pairwise_judge = create_pairwise_evaluator(judge_template, oai_client)
 
 # Main
 if __name__ == "__main__":
-
     # Run Prompt A
     results_a = evaluate(
         run_prompt_a,
