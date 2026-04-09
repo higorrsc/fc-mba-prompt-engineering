@@ -1,28 +1,29 @@
 """Precision, Recall, and F1 Score metrics for evaluation."""
-from typing import Callable, Dict, List, Set
+
+from typing import Callable
 
 from ch03_prompt_evaluation.shared.parsers import parse_json_response
 
 
 def calculate_precision_recall_f1(
-    outputs: List[Dict],
-    examples: List,
-    extract_predicted: Callable[[Dict], Set],
-    extract_expected: Callable[[Dict], Set]
-) -> List[Dict]:
+    outputs: list[dict],
+    examples: list,
+    extract_predicted: Callable[[dict], set],
+    extract_expected: Callable[[dict], set],
+) -> list[dict]:
     """
     Calculate precision, recall, and F1 score.
 
     Generic implementation that works with any extraction functions.
 
     Args:
-        outputs: List of model outputs
-        examples: List of dataset examples
+        outputs: list of model outputs
+        examples: list of dataset examples
         extract_predicted: Function to extract predicted set from output
         extract_expected: Function to extract expected set from example
 
     Returns:
-        List of metric dictionaries:
+        list of metric dictionaries:
         [
             {"key": "precision", "score": float, "comment": str},
             {"key": "recall", "score": float, "comment": str},
@@ -57,28 +58,16 @@ def calculate_precision_recall_f1(
         2 * (precision * recall) / (precision + recall)
         if (precision + recall) > 0
         else 0
-        )
+    )
 
     return [
-        {
-            "key": "precision",
-            "score": precision,
-            "comment": f"TP:{tp} FP:{fp}"
-        },
-        {
-            "key": "recall",
-            "score": recall,
-            "comment": f"TP:{tp} FN:{fn}"
-        },
-        {
-            "key": "f1",
-            "score": f1,
-            "comment": f"P:{precision:.2f} R:{recall:.2f}"
-        }
+        {"key": "precision", "score": precision, "comment": f"TP:{tp} FP:{fp}"},
+        {"key": "recall", "score": recall, "comment": f"TP:{tp} FN:{fn}"},
+        {"key": "f1", "score": f1, "comment": f"P:{precision:.2f} R:{recall:.2f}"},
     ]
 
 
-def extract_findings_comparable(output: Dict) -> Set[tuple]:
+def extract_findings_comparable(output: dict) -> set[tuple]:
     """
     Extract ONLY comparable fields (type, severity) as tuples.
 
@@ -95,7 +84,7 @@ def extract_findings_comparable(output: Dict) -> Set[tuple]:
         output: Model output dictionary with "output" key containing JSON
 
     Returns:
-        Set of (type, severity) tuples
+        set of (type, severity) tuples
 
     Example:
         >>> output = {
@@ -125,7 +114,7 @@ def extract_findings_comparable(output: Dict) -> Set[tuple]:
     for f in data.get("findings", []):
         finding_tuple = (
             f.get("type", ""),
-            f.get("severity", "").lower()  # Normalize to lowercase
+            f.get("severity", "").lower(),  # Normalize to lowercase
         )
         findings.add(finding_tuple)
 

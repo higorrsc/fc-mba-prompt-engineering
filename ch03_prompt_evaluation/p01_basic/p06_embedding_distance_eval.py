@@ -4,6 +4,7 @@ Embedding distance evaluation: Semantic similarity measurement.
 
 Demonstrates deterministic evaluator using vector embeddings.
 """
+
 from pathlib import Path
 
 from langsmith import evaluate

@@ -31,4 +31,4 @@ def print_llm_result(prompt, response):
         f"[bold white]Total tokens:[/bold white] "
         f"[bright_black]{usage['total_tokens']}[/bright_black]"
     )
-    console.print(f"[yellow]{'-'*50} [/yellow]")
+    console.print(f"[yellow]{'-' * 50} [/yellow]")

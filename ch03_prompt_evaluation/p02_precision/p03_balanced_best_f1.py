@@ -1,6 +1,7 @@
 """
 Demonstrates best F1 SCORE (balance between Precision and Recall).
 """
+
 from pathlib import Path
 
 from langsmith import evaluate
@@ -24,7 +25,12 @@ prompt = load_yaml_prompt("balanced.yaml")
 def run_balanced_analysis(inputs: dict) -> dict:
     """Target function for evaluate()."""
 
-    return execute_text_prompt(prompt, inputs, oai_client, input_key="code",)
+    return execute_text_prompt(
+        prompt,
+        inputs,
+        oai_client,
+        input_key="code",
+    )
 
 
 def bug_detection_summary(outputs: list, examples: list) -> list:
@@ -38,10 +44,7 @@ def bug_detection_summary(outputs: list, examples: list) -> list:
     def extract_expected(example):
         findings = set()
         for f in example.outputs.get("expected_findings", []):
-            finding_tuple = (
-                f["type"],
-                f["severity"].lower()
-            )
+            finding_tuple = (f["type"], f["severity"].lower())
             findings.add(finding_tuple)
         return findings
 
@@ -49,7 +52,7 @@ def bug_detection_summary(outputs: list, examples: list) -> list:
         outputs,
         examples,
         extract_predicted=extract_findings_comparable,
-        extract_expected=extract_expected
+        extract_expected=extract_expected,
     )
 
 
@@ -60,9 +63,9 @@ if __name__ == "__main__":
         run_balanced_analysis,
         data=DATASET_NAME,
         evaluators=[],
-        summary_evaluators=[bug_detection_summary], #type:ignore
+        summary_evaluators=[bug_detection_summary],  # type:ignore
         experiment_prefix="Balanced_BestF1",
-        max_concurrency=2
+        max_concurrency=2,
     )
 
     print(f"Experiment: {results.experiment_name}")

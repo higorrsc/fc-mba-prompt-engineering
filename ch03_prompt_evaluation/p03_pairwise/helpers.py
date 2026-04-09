@@ -37,7 +37,7 @@ def create_pairwise_evaluator(judge_prompt_obj, oai_client):
     def evaluate_pairwise(
         inputs: dict,
         outputs: list,
-        reference_outputs: dict |None = None,
+        reference_outputs: dict | None = None,
     ):
         """Pairwise comparison evaluator."""
 
@@ -49,14 +49,14 @@ def create_pairwise_evaluator(judge_prompt_obj, oai_client):
         judge_prompt = judge_prompt_obj.format(
             code=code,
             answer_a=answer_a,
-            answer_b=answer_b
+            answer_b=answer_b,
         )
 
         # Get judge decision
         response = oai_client.chat.completions.create(
             messages=[{"role": "user", "content": judge_prompt}],
             model=get_model_name(),
-            temperature=get_temperature()
+            temperature=get_temperature(),
         )
 
         decision = response.choices[0].message.content.strip().upper()

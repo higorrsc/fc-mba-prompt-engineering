@@ -1,6 +1,7 @@
 """
 Demonstrates HIGH RECALL with LOW PRECISION.
 """
+
 from pathlib import Path
 
 from langsmith import evaluate
@@ -33,13 +34,11 @@ def bug_detection_summary(outputs: list, examples: list) -> list:
     A finding is correct only if BOTH type AND severity match.
     This ensures fair evaluation of bug detection quality.
     """
+
     def extract_expected(example):
         findings = set()
         for f in example.outputs.get("expected_findings", []):
-            finding_tuple = (
-                f["type"],
-                f["severity"].lower()
-            )
+            finding_tuple = (f["type"], f["severity"].lower())
             findings.add(finding_tuple)
         return findings
 
@@ -47,7 +46,7 @@ def bug_detection_summary(outputs: list, examples: list) -> list:
         outputs,
         examples,
         extract_predicted=extract_findings_comparable,
-        extract_expected=extract_expected
+        extract_expected=extract_expected,
     )
 
 
@@ -57,9 +56,9 @@ if __name__ == "__main__":
         run_aggressive_analysis,
         data=DATASET_NAME,
         evaluators=[],
-        summary_evaluators=[bug_detection_summary], #type:ignore
+        summary_evaluators=[bug_detection_summary],  # type:ignore
         experiment_prefix="Aggressive_HighRecall",
-        max_concurrency=2
+        max_concurrency=2,
     )
 
     print(f"Experiment: {results.experiment_name}")

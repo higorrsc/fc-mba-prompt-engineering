@@ -10,9 +10,7 @@ llm = init_chat_model(model="openai:gpt-4o-mini", temperature=0.7)
 prompt = PromptTemplate(
     input_variables=["question"],
     template=(
-        "You are a technology assistant.\n"
-        "Answer the following question:\n\n"
-        "{question}"
+        "You are a technology assistant.\nAnswer the following question:\n\n{question}"
     ),
 )
 
